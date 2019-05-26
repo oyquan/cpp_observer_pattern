@@ -18,10 +18,10 @@ unsigned ValueEntity::getId() const
 void ValueEntity::setValue(int nValue) 
 {
     if (m_nValue != nValue) 
-	{
+    {
         cout << "value of ValueEntity[" << m_nId 
-				<< "] changed from " << m_nValue 
-				<< " to " << nValue << "\n";
+                << "] changed from " << m_nValue 
+                << " to " << nValue << "\n";
         m_nValue = nValue;
         notify(ValueChanged);
     }

@@ -7,9 +7,9 @@ int main()
 {
     ValueEntity *ve = new ValueEntity(0);
     ValueMonitor *vm1 = new ValueMonitor;
-    ve->addObserver(vm1);	// equivalent to vm1->startObserve(ve);
+    ve->addObserver(vm1);   // equivalent to vm1->startObserve(ve);
     ValueMonitor *vm2 = new ValueMonitor;
-    vm2->startObserve(ve);	// equivalent to ve->addObserver(vm2);
+    vm2->startObserve(ve);  // equivalent to ve->addObserver(vm2);
     while (ve->getValue() < 3)
     {
         ve->setValue(ve->getValue()+1);

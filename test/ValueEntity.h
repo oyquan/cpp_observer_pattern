@@ -15,9 +15,9 @@ class ValueEntity : public Subject<ValueEntity>
         static const long ValueChanged = 1;
 
     private:
-        static unsigned InstanceCount;
-        int				m_nValue;   // state
-        const unsigned	m_nId;		// identity
+        static unsigned InstanceCount;  // count of ValueEntity instances
+        int             m_nValue;       // state
+        const unsigned  m_nId;          // identity
 };
 
 #endif // VALUEENTITY_H

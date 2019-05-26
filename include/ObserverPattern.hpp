@@ -13,18 +13,18 @@ class Subject       // abstract template class
     public:
         Subject();                                              // constructor
         virtual ~Subject() = 0;                                 // destrctor, pure virtual
-        bool addObserver(Observer<T> *observer);				// add one observer
-        bool removeObserver(Observer<T> *observer);				// remove one observer
+        bool addObserver(Observer<T> *observer);                // add one observer
+        bool removeObserver(Observer<T> *observer);             // remove one observer
         const std::list<Observer<T>*>& getObservers() const;    // get list of observers
 
     protected:
         void notify(long msg) const;                            // notify all observers
 
     private:
-        Subject(const Subject&) = delete;						// disable copy from left value
-		Subject(const Subject&&) = delete;						// disable copy from right value
-        Subject& operator=(const Subject&) = delete;			// disable assign from left value
-		Subject& operator=(const Subject&&) = delete;			// disable assign from right value
+        Subject(const Subject&) = delete;                       // disable copy from left value
+        Subject(const Subject&&) = delete;                      // disable copy from right value
+        Subject& operator=(const Subject&) = delete;            // disable assign from left value
+        Subject& operator=(const Subject&&) = delete;           // disable assign from right value
         std::list<Observer<T>*> m_observers;                    // list of observers
 };
 
@@ -47,10 +47,10 @@ class Observer      // abstract template class
         virtual bool uninit();                                  // uninitialize, invoked before stop observing
 
     private:
-        Observer(const Observer&) = delete;						// disable copy from left value
-		Observer(const Observer&&) = delete;					// disable copy from right value
-        Observer& operator=(const Observer&) = delete;			// disable assign from left value
-		Observer& operator=(const Observer&&) = delete;			// disable assign from right value
+        Observer(const Observer&) = delete;                     // disable copy from left value
+        Observer(const Observer&&) = delete;                    // disable copy from right value
+        Observer& operator=(const Observer&) = delete;          // disable assign from left value
+        Observer& operator=(const Observer&&) = delete;         // disable assign from right value
         T *m_subject;                                           // the subject observed
 };
 
@@ -64,7 +64,7 @@ Subject<T>::~Subject()
 {
     while (!m_observers.empty())
     {
-        removeObserver(m_observers.back()); // remove observers in reverse order
+        removeObserver(m_observers.back());         // remove observers in reverse order
     }
 }
 
@@ -111,16 +111,16 @@ bool Subject<T>::removeObserver(Observer<T> *observer)
 template<typename T>
 const std::list<Observer<T>*>& Subject<T>::getObservers() const
 {
-    return m_observers; // list of observers
+    return m_observers;                             // list of observers
 }
 
 template<typename T>
 void Subject<T>::notify(long msg) const
 {
-	for (auto it = m_observers.begin(); it != m_observers.end(); ++it)
-	{
-		(*it)->update(msg);	// notify observers in observing order
-	}
+    for (auto it = m_observers.begin(); it != m_observers.end(); ++it)
+    {
+        (*it)->update(msg);                         // notify observers in observing order
+    }
 }
 
 
@@ -132,7 +132,9 @@ template<typename T>
 Observer<T>::~Observer() 
 {
     // Observer itself MUST not invoke stopObserve in its destrctor,
-    // otherwise uninit of base class gets invoked, not that of derived class
+    // otherwise uninit of base class gets invoked, not that of derived class.
+    // all non-abstract derived classes MUST invoke stopObserve in their destrctors,
+    // otherwise dangling pointer may occurs.
 }
 
 template<typename T>
@@ -156,7 +158,7 @@ bool Observer<T>::startObserve(T *subject)
 
     // order matters, assignment MUST occurs before addObserver
     m_subject = subject;
-    m_subject->addObserver(this);	// no cast required
+    m_subject->addObserver(this);   // no cast required
     init();                         // initialize after start observing
     return true;
 }
@@ -172,7 +174,7 @@ bool Observer<T>::stopObserve(T *subject)
     uninit();                       // uninitialize before stop observing
     // order matters, assignment MUST occurs before removeObserver
     m_subject = nullptr;
-    subject->removeObserver(this);	// no cast required
+    subject->removeObserver(this);  // no cast required
     return true;
 }
 
@@ -180,9 +182,9 @@ template<typename T>
 void Observer<T>::stopObserve()
 {
     // Observer itself MUST not invoke stopObserve in its destrctor,
-    // otherwise uninit of base class gets invoked, not that of derived class
+    // otherwise uninit of base class gets invoked, not that of derived class.
     // all non-abstract derived classes MUST invoke stopObserve in their destrctors,
-    // otherwise dangling pointer may occurs
+    // otherwise dangling pointer may occurs.
     if (m_subject)
     {
        stopObserve(m_subject);      // stop observing the subject

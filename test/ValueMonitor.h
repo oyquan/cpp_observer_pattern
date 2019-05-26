@@ -16,8 +16,8 @@ class ValueMonitor: public Observer<ValueEntity>
         bool uninit() override;
 
     private:
-        static unsigned InstanceCount;
-        unsigned m_nId;
+        static unsigned InstanceCount;  // count of ValueEntity instances
+        unsigned m_nId;                 // identity    
 };
 
 #endif // VALUEMONITOR_H

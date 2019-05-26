@@ -15,11 +15,11 @@ bool ValueMonitor::update(long msg)
     // It's guaranteed that getSubject() returns a non-zero pointer of type ValueEntity*
     ValueEntity *valueEntity = getSubject();
     switch (msg) 
-	{
+    {
         case ValueEntity::ValueChanged:
             cout << "value of ValueEntity[" << valueEntity->getId()
-                << "] observed by ValueMonitor[" << m_nId
-                << "] changed to " << valueEntity->getValue() << "\n";
+                    << "] observed by ValueMonitor[" << m_nId
+                    << "] changed to " << valueEntity->getValue() << "\n";
             return true;
         default:
             return false;
