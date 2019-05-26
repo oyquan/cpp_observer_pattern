@@ -4,9 +4,9 @@
 #include <list>
 #include <algorithm>
 
-class ObserverImpl;
+class ObserverImpl;                                             // forward declaration
 
-class SubjectImpl												// for implementation of Subject only
+class SubjectImpl                                               // for implementation of Subject only
 {
     public:
         SubjectImpl();                                          // constructor
@@ -26,7 +26,7 @@ class SubjectImpl												// for implementation of Subject only
         std::list<ObserverImpl*> m_observers;                   // list of observers
 };
 
-class ObserverImpl												// for implementation of Observer only
+class ObserverImpl                                              // for implementation of Observer only
 {
     public:
         ObserverImpl();                                         // constructor
@@ -53,23 +53,23 @@ inline SubjectImpl::SubjectImpl() {}
 
 inline SubjectImpl::~SubjectImpl()
 {
-	while (!m_observers.empty())
-	{
-		removeObserver(m_observers.back());         // remove observers in reverse order
-	}
+    while (!m_observers.empty())
+    {
+        removeObserver(m_observers.back());                     // remove observers in reverse order
+    }
 }
 
 inline bool SubjectImpl::addObserver(ObserverImpl *observer)
 {
     if (!observer)
     {
-        return false;                               // nullptr, invalid argument
+        return false;                                           // nullptr, invalid argument
     }
 
     auto it = std::find(m_observers.begin(), m_observers.end(), observer);
     if (it != m_observers.end())
     {
-        return false;                               // already in the list of observers
+        return false;                                           // already in the list of observers
     }
 
     // order matters, push_back MUST occurs before startObserve
@@ -82,13 +82,13 @@ inline  bool SubjectImpl::removeObserver(ObserverImpl *observer)
 {
     if (!observer)
     {
-        return false;                               // nullptr, invalid argument
+        return false;                                           // nullptr, invalid argument
     }
 
     auto it = std::find(m_observers.begin(), m_observers.end(), observer);
     if (it == m_observers.end())
     {
-        return false;                               // not in the list of observers
+        return false;                                           // not in the list of observers
     }
 
     // order matters, erase MUST occurs before stopObserve
@@ -99,14 +99,14 @@ inline  bool SubjectImpl::removeObserver(ObserverImpl *observer)
 
 inline const std::list<ObserverImpl*>& SubjectImpl::getObservers() const
 {
-    return m_observers;                             // list of observers
+    return m_observers;                                         // list of observers
 }
 
 inline void SubjectImpl::notify(long msg) const
 {
     for (auto it = m_observers.begin(); it != m_observers.end(); ++it)
     {
-        (*it)->update(msg);                         // notify observers in observing order
+        (*it)->update(msg);                                     // notify observers in observing order
     }
 }
 
@@ -124,25 +124,25 @@ inline ObserverImpl::~ObserverImpl()
 
 inline SubjectImpl* ObserverImpl::getSubject() const
 {
-    return m_subject;               // the subject observed
+    return m_subject;                                           // the subject observed
 }
 
 inline bool ObserverImpl::startObserve(SubjectImpl *subject)
 {
     if (!subject || (m_subject == subject))
     {
-        return false;               // nullptr or already observing
+        return false;                                           // nullptr or already observing
     }
 
     if (m_subject)
     {
-        stopObserve(m_subject);     // stop observing the subject if any
+        stopObserve(m_subject);                                 // stop observing the subject if any
     }
 
     // order matters, assignment MUST occurs before addObserver
     m_subject = subject;
-    m_subject->addObserver(this);   // no cast required
-    init();                         // initialize after start observing
+    m_subject->addObserver(this);                               // no cast required
+    init();                                                     // initialize after start observing
     return true;
 }
 
@@ -150,10 +150,10 @@ inline bool ObserverImpl::stopObserve(SubjectImpl *subject)
 {
     if (!subject || (m_subject != subject))
     {
-        return false;               // nullptr or not observing
+        return false;                                           // nullptr or not observing
     }
 
-    uninit();                       // uninitialize before stop observing
+    uninit();                                                   // uninitialize before stop observing
     // order matters, assignment MUST occurs before removeObserver
     m_subject = nullptr;
     subject->removeObserver(this);
@@ -168,24 +168,24 @@ inline void ObserverImpl::stopObserve()
     // otherwise dangling pointer may occur.
     if (m_subject)
     {
-       stopObserve(m_subject);      // stop observing the subject
+       stopObserve(m_subject);                                  // stop observing the subject
     }
 }
 
 template<typename T>
-class Observer;     // forward declaration
+class Observer;                                                 // forward declaration
 
 template<typename T>
-class Subject : private SubjectImpl								// abstract template class
+class Subject : private SubjectImpl                             // abstract template class
 {
-	// static_cast from Subject<T>* to SubjectImpl* in Observer<T>
-	friend class Observer<T>;
+    // static_cast from Subject<T>* to SubjectImpl* in Observer<T>
+    friend class Observer<T>;
     public:
         Subject();                                              // constructor
         virtual ~Subject() = 0;                                 // destrctor, pure virtual
         bool addObserver(Observer<T> *observer);                // add one observer
         bool removeObserver(Observer<T> *observer);             // remove one observer
-        std::list<Observer<T>*> getObservers() const;			// get list of observers
+        std::list<Observer<T>*> getObservers() const;           // get list of observers
 
     protected:
         void notify(long msg) const;                            // notify all observers
@@ -200,11 +200,11 @@ class Subject : private SubjectImpl								// abstract template class
 
 
 template<typename T>
-class Observer : private ObserverImpl							// abstract template class
+class Observer : private ObserverImpl                           // abstract template class
 {
-	// static_cast from Observer<T>* to ObserverImpl* in Subject<T>
-	friend class Subject<T>;
-	public:
+    // static_cast from Observer<T>* to ObserverImpl* in Subject<T>
+    friend class Subject<T>;
+    public:
         Observer();                                             // constructor
         virtual ~Observer();                                    // destrctor, virtual
         bool startObserve(T *subject);                          // start observing the subject
@@ -235,31 +235,31 @@ Subject<T>::~Subject() {}
 template<typename T>
 bool Subject<T>::addObserver(Observer<T> *observer)
 {
-	return SubjectImpl::addObserver(static_cast<ObserverImpl*>(observer));
+    return SubjectImpl::addObserver(static_cast<ObserverImpl*>(observer));
 }
 
 template<typename T>
 bool Subject<T>::removeObserver(Observer<T> *observer)
 {
-	return SubjectImpl::removeObserver(static_cast<ObserverImpl*>(observer));
+    return SubjectImpl::removeObserver(static_cast<ObserverImpl*>(observer));
 }
 
 template<typename T>
 std::list<Observer<T>*> Subject<T>::getObservers() const
 {
-	std::list<Observer<T>*> observers;
-	for (auto observerImpl : SubjectImpl::getObservers())
-	{
-		auto observer = static_cast<Observer<T>*>(observerImpl);
-		observers.push_back(observer);
-	}
-	return observers;
+    std::list<Observer<T>*> observers;
+    for (auto observerImpl : SubjectImpl::getObservers())
+    {
+        auto observer = static_cast<Observer<T>*>(observerImpl);
+        observers.push_back(observer);
+    }
+    return observers;
 }
 
 template<typename T>
 void Subject<T>::notify(long msg) const
 {
-	SubjectImpl::notify(msg);
+    SubjectImpl::notify(msg);
 }
 
 
@@ -279,22 +279,22 @@ Observer<T>::~Observer()
 template<typename T>
 T* Observer<T>::getSubject() const
 {
-	// MUST not use reinterpret_cast
-	return static_cast<T*>(static_cast<Subject<T>*>(ObserverImpl::getSubject()));
+    // MUST not use reinterpret_cast
+    return static_cast<T*>(static_cast<Subject<T>*>(ObserverImpl::getSubject()));
 }
 
 template<typename T>
 bool Observer<T>::startObserve(T *subject) 
 {
-	// MUST not use reinterpret_cast
-	return ObserverImpl::startObserve(static_cast<SubjectImpl*>(static_cast<Subject<T>*>(subject)));
+    // MUST not use reinterpret_cast
+    return ObserverImpl::startObserve(static_cast<SubjectImpl*>(static_cast<Subject<T>*>(subject)));
 }
 
 template<typename T>
 bool Observer<T>::stopObserve(T *subject)
 {
-	// MUST not use reinterpret_cast
-	return ObserverImpl::stopObserve(static_cast<SubjectImpl*>(static_cast<Subject<T>*>(subject)));
+    // MUST not use reinterpret_cast
+    return ObserverImpl::stopObserve(static_cast<SubjectImpl*>(static_cast<Subject<T>*>(subject)));
 }
 
 template<typename T>
@@ -304,19 +304,19 @@ void Observer<T>::stopObserve()
     // otherwise uninit of base class gets invoked, not that of derived class.
     // all non-abstract derived classes MUST invoke stopObserve in their destrctors,
     // otherwise dangling pointer may occur.
-	ObserverImpl::stopObserve();
+    ObserverImpl::stopObserve();
 }
 
 template<typename T>
 bool Observer<T>::init()
 {
-    return false;                   // default do nothing
+    return false;                                               // default do nothing
 }
 
 template<typename T>
 bool Observer<T>::uninit()
 {
-    return false;                   // default do nothing
+    return false;                                               // default do nothing
 }
 
 #endif // OBSERVERPATTERN_HPP

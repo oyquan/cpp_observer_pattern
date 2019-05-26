@@ -5,32 +5,32 @@ using std::cout;
 
 void printObservers(const ValueEntity &valueEntity)
 {
-	auto observers = valueEntity.getObservers();
-	if (observers.size() > 0)
-	{
-		cout << "number of observers for ValueEntity[" << valueEntity.getId()
-				<< "]: " << observers.size() << "\n";
-	}
-	else
-	{
-		cout << "no observers for ValueEntity[" << valueEntity.getId() << "]\n";
-	}
+    auto observers = valueEntity.getObservers();
+    if (observers.size() > 0)
+    {
+        cout << "number of observers for ValueEntity[" << valueEntity.getId()
+                << "]: " << observers.size() << "\n";
+    }
+    else
+    {
+        cout << "no observers for ValueEntity[" << valueEntity.getId() << "]\n";
+    }
 }
 
 void printSubject(const ValueMonitor &valueMonitor)
 {
-	auto valueEntity = valueMonitor.getSubject();
-	if (valueEntity)
-	{
-		cout << "ValueMonitor[" << valueMonitor.getId()
-				<< "] observes ValueEntity[" << valueEntity->getId()
-				<< "]\n";
-	}
-	else
-	{
-		cout << "ValueMonitor[" << valueMonitor.getId()
-				<< "] observes nothing\n";
-	}
+    auto valueEntity = valueMonitor.getSubject();
+    if (valueEntity)
+    {
+        cout << "ValueMonitor[" << valueMonitor.getId()
+                << "] observes ValueEntity[" << valueEntity->getId()
+                << "]\n";
+    }
+    else
+    {
+        cout << "ValueMonitor[" << valueMonitor.getId()
+                << "] observes nothing\n";
+    }
 }
 
 int main() 
@@ -45,20 +45,20 @@ int main()
         ve->setValue(ve->getValue()+1);
     }
 
-	printObservers(*ve);
-	printSubject(*vm1);
-	printSubject(*vm2);
+    printObservers(*ve);
+    printSubject(*vm1);
+    printSubject(*vm2);
 
-	delete vm1;
-	vm1 = nullptr;
+    delete vm1;
+    vm1 = nullptr;
 
-	printObservers(*ve);
-	printSubject(*vm2);
+    printObservers(*ve);
+    printSubject(*vm2);
 
-	delete ve;
-	ve = nullptr;
+    delete ve;
+    ve = nullptr;
 
-	printSubject(*vm2);
+    printSubject(*vm2);
 
     delete vm2;
     vm2 = nullptr;

@@ -12,7 +12,7 @@ ValueMonitor::~ValueMonitor()
 
 unsigned ValueMonitor::getId() const
 {
-	return m_nId;
+    return m_nId;
 }
 
 bool ValueMonitor::update(long msg) 
