@@ -21,7 +21,7 @@ class DualRole: public Subject<DualRole>, public Observer<DualRole>
         bool uninit() override;
 
     private:
-        static unsigned InstanceCount;  // count of ValueEntity instances
+        static unsigned InstanceCount;  // count of DualRole instances
         int m_nValue;                   // state
         const unsigned m_nId;           // identity
 };
