@@ -10,6 +10,11 @@ ValueMonitor::~ValueMonitor()
     stopObserve();
 }
 
+unsigned ValueMonitor::getId() const
+{
+	return m_nId;
+}
+
 bool ValueMonitor::update(long msg) 
 {
     // It's guaranteed that getSubject() returns a non-zero pointer of type ValueEntity*

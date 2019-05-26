@@ -9,6 +9,7 @@ class ValueMonitor: public Observer<ValueEntity>
     public:
         ValueMonitor();
         ~ValueMonitor();
+		unsigned getId() const;
         bool update(long msg) override;
 
     protected:
