@@ -141,7 +141,7 @@ inline bool ObserverImpl::startObserve(SubjectImpl *subject)
 
     // order matters, assignment MUST occurs before addObserver
     m_subject = subject;
-    m_subject->addObserver(this);                               // no cast required
+    m_subject->addObserver(this);
     init();                                                     // initialize after start observing
     return true;
 }

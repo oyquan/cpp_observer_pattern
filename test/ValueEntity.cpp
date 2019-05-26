@@ -19,9 +19,7 @@ void ValueEntity::setValue(int nValue)
 {
     if (m_nValue != nValue) 
     {
-        cout << "value of ValueEntity[" << m_nId 
-                << "] changed from " << m_nValue 
-                << " to " << nValue << "\n";
+        cout << "ValueEntity[" << m_nId << "] " << m_nValue << "=>" << nValue << "\n";
         m_nValue = nValue;
         notify(ValueChanged);
     }

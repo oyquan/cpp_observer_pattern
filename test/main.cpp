@@ -1,5 +1,6 @@
 #include "ValueEntity.h"
 #include "ValueMonitor.h"
+#include "DualRole.h"
 #include <iostream>
 using std::cout;
 
@@ -33,7 +34,7 @@ void printSubject(const ValueMonitor &valueMonitor)
     }
 }
 
-int main() 
+void entityMonitorDemo()
 {
     auto ve = new ValueEntity(0);
     auto vm1 = new ValueMonitor;
@@ -42,7 +43,7 @@ int main()
     vm2->startObserve(ve);  // equivalent to ve->addObserver(vm2);
     while (ve->getValue() < 3)
     {
-        ve->setValue(ve->getValue()+1);
+        ve->setValue(ve->getValue() + 1);
     }
 
     printObservers(*ve);
@@ -62,5 +63,25 @@ int main()
 
     delete vm2;
     vm2 = nullptr;
+}
+
+void dualRoleDemo()
+{
+    // dr3 observes dr2, dr2 observes dr1, dr1 observes dr3
+    DualRole dr1(0);
+	DualRole dr2(1);
+	DualRole dr3(2);
+	dr3.startObserve(&dr2);     // equivalent to dr2.addObserver(&dr3);
+	dr1.addObserver(&dr2);      // equivalent to dr2.startObserve(&dr1);
+	dr1.startObserve(&dr3);     // equivalent to dr3.addObserver(&dr1);
+	dr1.setValue(3);
+	dr2.setValue(4);
+	dr3.setValue(5);
+}
+
+int main() 
+{
+    entityMonitorDemo();
+    dualRoleDemo();
     return 0;
 }

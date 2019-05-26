@@ -37,7 +37,7 @@ bool ValueMonitor::init()
     ValueEntity *valueEntity = getSubject();
     cout << "ValueMonitor[" << m_nId
             << "] starts observing ValueEntity[" << valueEntity->getId()
-            << "] whose value is " << valueEntity->getValue() << "\n";
+            << "]@" << valueEntity->getValue() << "\n";
     return true;
 }
 
@@ -47,6 +47,6 @@ bool ValueMonitor::uninit()
     ValueEntity *valueEntity = getSubject();
     cout << "ValueMonitor[" << m_nId
             << "] stops observing ValueEntity[" << valueEntity->getId()
-            << "] whose value is " << valueEntity->getValue() << "\n";
+            << "]@" << valueEntity->getValue() << "\n";
     return true;
 }
